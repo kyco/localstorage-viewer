@@ -1,2 +1,2 @@
 # localstorage-viewer
-A simple Chrome devtool for viewing localstorage.
+View localstorage from devtools with a simple interface.

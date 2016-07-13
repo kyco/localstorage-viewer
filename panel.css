@@ -1,0 +1,33 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+  font-size: 11px;
+}
+
+.clear {
+  clear: both;
+}
+
+.storage-item {
+  border-bottom: 1px solid #ddd;
+}
+
+.key,
+.value {
+  float: left;
+  height: 20px;
+  padding: 0 5px;
+  line-height: 20px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.key {
+  width: 15%;
+}
+
+.value {
+  width: 85%;
+}
