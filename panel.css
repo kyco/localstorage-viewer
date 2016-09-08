@@ -10,6 +10,25 @@
   clear: both;
 }
 
+header {
+  padding: 3px;
+  border-bottom: 1px solid #ddd;
+}
+
+.clear-button,
+.refresh-button {
+  padding: 5px 10px;
+  color: #555;
+  background-color: #fff;
+  font-size: 12px;
+  outline: 0;
+  border: 1px solid #ddd;
+}
+
+.clear-button:hover {
+  color: #000;
+}
+
 .storage-item {
   border-bottom: 1px solid #ddd;
 }
@@ -25,9 +44,9 @@
 }
 
 .key {
-  width: 15%;
+  width: 20%;
 }
 
 .value {
-  width: 85%;
+  width: 80%;
 }

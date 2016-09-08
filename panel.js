@@ -1,31 +1,58 @@
-/* eslint-disable no-undef */
-// This one acts in the context of the panel in the Dev Tools
-//
-// Can use
-// chrome.devtools.*
-// chrome.extension.*
+/*
+**  Available APIs:
+**    chrome.devtools.*
+**    chrome.extension.*
+*/
 
-document.querySelector('#executescript').addEventListener('click', function() {
-  sendObjectToInspectedPage({
-    action: 'code',
-    content: 'console.log("Inline script executed")'
+(function createChannel() {
+  // Create a port with background page for continous message communication
+  let port = chrome.extension.connect({
+    name: 'Sample Communication' // Given a Name
   });
-}, false);
 
-document.querySelector('#insertscript').addEventListener('click', function() {
-  sendObjectToInspectedPage({
-    action: 'script',
-    content: 'inserted-script.js'
-  });
-}, false);
+  // Listen to messages from the background page
+  port.onMessage.addListener(function(message) {
+    console.log('message', message);
+    let container = document.querySelector('#storage-items');
 
-document.querySelector('#insertmessagebutton').addEventListener('click', function() {
-  sendObjectToInspectedPage({
-    action: 'code',
-    content: 'document.body.innerHTML="<button>Send message to DevTools</button>"'
+    let markup = '';
+    for (let key in message.content) {
+      if (message.content.hasOwnProperty(key)) {
+        let value = message.content[key];
+        let item;
+
+        try {
+          item = JSON.parse(value);
+        } catch (err) {
+          item = value;
+        }
+
+        console.log('item', item);
+
+        markup += `
+          <div class="storage-item">
+            <div class="key">${key}</div>
+            <div class="value">${value}</div>
+            <div class="clear"></div>
+          </div>
+        `;
+      }
+    }
+
+    if (markup) {
+      container.innerHTML = markup;
+    } else {
+      container.innerHTML = 'localStorage is empty!';
+    }
   });
-  sendObjectToInspectedPage({
-    action: 'script',
-    content: 'messageback-script.js'
-  });
-}, false);
+})();
+
+function sendObjectToInspectedPage(message) {
+  message.tabId = chrome.devtools.inspectedWindow.tabId;
+  chrome.extension.sendMessage(message);
+}
+
+sendObjectToInspectedPage({
+  action: 'script',
+  content: 'content_script.js'
+});
