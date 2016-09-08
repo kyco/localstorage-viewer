@@ -1,12 +1,13 @@
 /* eslint-disable no-undef */
 
+localStorageItems = localStorage.length;
+
 chrome.extension.onMessage.addListener((message) => {
   if (message.msg === 'clear') {
     localStorage.clear();
   }
 });
 
-localStorageItems = localStorage.length;
 chrome.extension.sendMessage({
   type: 'init',
   content: localStorage
