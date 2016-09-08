@@ -24,3 +24,7 @@ chrome.extension.onConnect.addListener(function(port) {
     chrome.extension.onMessage.removeListener(extensionListener);
   });
 });
+
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+  chrome.tabs.executeScript(tabId, { file: 'content_script.js' });
+});
