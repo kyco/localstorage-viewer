@@ -9,6 +9,8 @@ chrome.extension.onConnect.addListener(function(port) {
   let extensionListener = function(message, sender, sendResponse) {
     if (message.tabId && message.content) {
       chrome.tabs.executeScript(message.tabId, { file: message.content });
+    } else if (message.msg) {
+      chrome.tabs.sendMessage(message.tabId, message, sendResponse);
     } else {
       port.postMessage(message);
     }

@@ -7,7 +7,7 @@
 
 const container = document.querySelector('#storage-items');
 const messageContainer = document.querySelector('#message');
-// const clearButton = document.querySelector('#clear-button');
+const clearButton = document.querySelector('#clear-button');
 const refreshButton = document.querySelector('#refresh-button');
 
 const updateMarkup = function(storageItems) {
@@ -53,6 +53,12 @@ refreshButton.addEventListener('click', () => {
   sendObjectToInspectedPage({
     action: 'script',
     content: 'content_script.js'
+  });
+});
+
+clearButton.addEventListener('click', () => {
+  sendObjectToInspectedPage({
+    msg: 'clear'
   });
 });
 
