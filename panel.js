@@ -7,6 +7,8 @@
 
 const container = document.querySelector('#storage-items');
 const messageContainer = document.querySelector('#message');
+// const clearButton = document.querySelector('#clear-button');
+const refreshButton = document.querySelector('#refresh-button');
 
 const updateMarkup = function(storageItems) {
   let markup = '';
@@ -35,10 +37,26 @@ const updateMarkup = function(storageItems) {
 
   if (markup) {
     container.innerHTML = markup;
+    messageContainer.innerHTML = '';
   } else {
+    container.innerHTML = '';
     messageContainer.innerHTML = 'Local storage is empty.';
   }
 };
+
+function sendObjectToInspectedPage(message) {
+  message.tabId = chrome.devtools.inspectedWindow.tabId;
+  chrome.extension.sendMessage(message);
+}
+
+refreshButton.addEventListener('click', () => {
+  sendObjectToInspectedPage({
+    action: 'script',
+    content: 'content_script.js'
+  });
+});
+
+// MAIN
 
 (function createChannel() {
   // Create a port with background page for continous message communication
@@ -48,15 +66,9 @@ const updateMarkup = function(storageItems) {
 
   // Listen to messages from the background page
   port.onMessage.addListener(function(message) {
-    console.log('message', message);
     updateMarkup(message.content);
   });
 })();
-
-function sendObjectToInspectedPage(message) {
-  message.tabId = chrome.devtools.inspectedWindow.tabId;
-  chrome.extension.sendMessage(message);
-}
 
 sendObjectToInspectedPage({
   action: 'script',
