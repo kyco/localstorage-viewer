@@ -15,28 +15,45 @@ header {
   border-bottom: 1px solid #ddd;
 }
 
-.clear-button,
-.refresh-button {
-  padding: 5px 10px;
+header .message {
+  margin-left: 3px;
+  color: #555;
+}
+
+header button {
+  padding: 3px 6px;
   color: #555;
   background-color: #fff;
-  font-size: 12px;
   outline: 0;
   border: 1px solid #ddd;
 }
 
-.clear-button:hover {
+header button:hover {
   color: #000;
+  border-color: #bbb;
+}
+
+
+.storage-items em {
+  padding: 10px;
 }
 
 .storage-item {
   border-bottom: 1px solid #ddd;
+  cursor: default;
+}
+
+.storage-item.even {
+  background-color: #eff;
+}
+
+.storage-item:hover {
+  background-color: #fdf6e3;
 }
 
 .key,
 .value {
   float: left;
-  height: 20px;
   padding: 0 5px;
   line-height: 20px;
   overflow: hidden;
