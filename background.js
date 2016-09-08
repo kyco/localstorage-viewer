@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /*
 **  Available APIs:
 **    chrome.tabs.*
@@ -12,7 +13,7 @@ chrome.extension.onConnect.addListener(function(port) {
       port.postMessage(message);
     }
     sendResponse(message);
-  }
+  };
 
   // Listens to messages sent from the panel
   chrome.extension.onMessage.addListener(extensionListener);
