@@ -1,9 +1,17 @@
-/* eslint-disable no-undef */
-/*
-**  Available APIs:
-**    chrome.tabs.*
-**    chrome.extension.*
-*/
+'use strict';
+
+/**
+ * # Background Page
+ *
+ * This file handles all the JS which runs on the background page. The background
+ * page is a HTML file which automatically gets inserted into the current context
+ * and is responsible for establishing communication between the inspected page
+ * and the panel.
+ *
+ * Available APIs:
+ * - chrome.tabs.*
+ * - chrome.extension.*
+ */
 
 chrome.extension.onConnect.addListener(function(port) {
   let extensionListener = function(message, sender, sendResponse) {

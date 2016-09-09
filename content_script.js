@@ -1,4 +1,13 @@
-/* eslint-disable no-undef */
+'use strict';
+
+/**
+ * # Content Script
+ *
+ * This file get's injected into the inspected tab.
+ *
+ * Available APIs:
+ * - chrome.extension.*
+ */
 
 localStorageItems = localStorage.length;
 

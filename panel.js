@@ -1,15 +1,26 @@
-/* eslint-disable no-undef */
-/*
-**  Available APIs:
-**    chrome.devtools.*
-**    chrome.extension.*
-*/
+'use strict';
+
+/**
+ * # Panel
+ *
+ * This file handles all the JS on the panel itself.
+ *
+ * Available APIs:
+ * - chrome.devtools.*
+ * - chrome.extension.*
+ */
 
 const container = document.querySelector('#storage-items');
-const messageContainer = document.querySelector('#message');
 const clearButton = document.querySelector('#clear-button');
 const refreshButton = document.querySelector('#refresh-button');
+const messageContainer = document.querySelector('#message');
 
+/**
+ * This method updates the panel's UI.
+ *
+ * @method `updateMarkup`
+ * @param {Object} storageItems
+ */
 const updateMarkup = function(storageItems) {
   let markup = '';
   let count = 0;
@@ -22,6 +33,7 @@ const updateMarkup = function(storageItems) {
       try {
         item = JSON.parse(value);
       } catch (err) {
+        console.warn(`Couldn't parse value for ${key}.`);
         item = value;
       }
 
@@ -44,6 +56,13 @@ const updateMarkup = function(storageItems) {
   }
 };
 
+/**
+ * This method sends a message to background.js which then gets
+ * passed on to the inspected page.
+ *
+ * @method `sendObjectToInspectedPage`
+ * @param {Object} message
+ */
 function sendObjectToInspectedPage(message) {
   message.tabId = chrome.devtools.inspectedWindow.tabId;
   chrome.extension.sendMessage(message);
@@ -62,16 +81,18 @@ clearButton.addEventListener('click', () => {
   });
 });
 
-// MAIN
-
+/**
+ * This method creates a communication channel between the panel and the
+ * background page.
+ *
+ * @method `createChannel`
+ */
 (function createChannel() {
-  // Create a port with background page for continous message communication
-  let port = chrome.extension.connect({
-    name: 'Sample Communication' // Given a Name
-  });
+  // Create channel with background.js
+  let port = chrome.extension.connect({ name: 'lsv' });
 
-  // Listen to messages from the background page
-  port.onMessage.addListener(function(message) {
+  // Listen to messages from background.js
+  port.onMessage.addListener((message) => {
     updateMarkup(message.content);
   });
 })();
