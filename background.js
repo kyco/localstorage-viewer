@@ -9,8 +9,14 @@
  * and the panel.
  *
  * Available APIs:
- * - chrome.tabs.*
+ * - chrome.app.*
  * - chrome.extension.*
+ * - chrome.i18n.*
+ * - chrome.management.*
+ * - chrome.permissions.*
+ * - chrome.runtime.*
+ * - chrome.tabs.*
+ * - chrome.windows.*
  */
 
 chrome.extension.onConnect.addListener(function(port) {

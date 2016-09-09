@@ -6,8 +6,11 @@
  * This file handles all the JS on the panel itself.
  *
  * Available APIs:
+ * - chrome.app.*
  * - chrome.devtools.*
  * - chrome.extension.*
+ * - chrome.i18n.*
+ * - chrome.runtime.*
  */
 
 const container = document.querySelector('#storage-items');

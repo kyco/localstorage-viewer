@@ -6,7 +6,10 @@
  * This file get's injected into the inspected tab.
  *
  * Available APIs:
+ * - chrome.app.*
  * - chrome.extension.*
+ * - chrome.i18n.*
+ * - chrome.runtime.*
  */
 
 localStorageItems = localStorage.length;
