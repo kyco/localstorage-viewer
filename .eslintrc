@@ -158,7 +158,7 @@
     "no-throw-literal": 2,
     "no-trailing-spaces": [1, {"skipBlankLines": false}],
     "no-undef-init": 1,
-    "no-undef": 2,
+    "no-undef": 0,
     "no-undefined": 0,
     "no-underscore-dangle": 0,
     "no-unexpected-multiline": 2,
