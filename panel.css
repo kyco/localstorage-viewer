@@ -11,6 +11,11 @@
 }
 
 header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
   padding: 3px;
   border-bottom: 1px solid #ddd;
 }
@@ -33,6 +38,9 @@ header button:hover {
   border-color: #bbb;
 }
 
+.storage-items {
+  margin-top: 27px;
+}
 
 .storage-items em {
   padding: 10px;
