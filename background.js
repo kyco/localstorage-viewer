@@ -19,8 +19,8 @@
  * - chrome.windows.*
  */
 
-chrome.extension.onConnect.addListener(function(port) {
-  let extensionListener = function(message, sender, callback) {
+chrome.extension.onConnect.addListener((port) => {
+  const extensionListener = function(message, sender, callback) {
     switch (message.type) {
       case 'update':
         port.postMessage(message);
@@ -35,13 +35,23 @@ chrome.extension.onConnect.addListener(function(port) {
 
   chrome.extension.onMessage.addListener(extensionListener);
 
-  port.onDisconnect.addListener(function(disconnectedPort) {
-    chrome.extension.onMessage.removeListener(extensionListener);
+  chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    chrome.tabs.sendMessage(tabId, {
+      type: 'getLocalStorage'
+    }, (response) => {
+      port.postMessage(response);
+    });
   });
-});
 
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-  chrome.tabs.sendMessage(tabId, {
-    type: 'getLocalStorage'
+  chrome.tabs.onActivated.addListener((activeInfo) => {
+    chrome.tabs.sendMessage(activeInfo.tabId, {
+      type: 'getLocalStorage'
+    }, (response) => {
+      port.postMessage(response);
+    });
+  });
+
+  port.onDisconnect.addListener((disconnectedPort) => {
+    chrome.extension.onMessage.removeListener(extensionListener);
   });
 });
