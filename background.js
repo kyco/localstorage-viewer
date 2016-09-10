@@ -20,18 +20,19 @@
  */
 
 chrome.extension.onConnect.addListener(function(port) {
-  let extensionListener = function(message, sender, sendResponse) {
-    if (message.tabId && message.content) {
-      chrome.tabs.executeScript(message.tabId, { file: message.content });
-    } else if (message.msg) {
-      chrome.tabs.sendMessage(message.tabId, message, sendResponse);
-    } else {
-      port.postMessage(message);
+  let extensionListener = function(message, sender, callback) {
+    switch (message.type) {
+      case 'update':
+        port.postMessage(message);
+        break;
+      default:
+        callback(message);
+        chrome.tabs.sendMessage(message.tabId, message, (response) => {
+          port.postMessage(response);
+        });
     }
-    sendResponse(message);
   };
 
-  // Listens to messages sent from the panel
   chrome.extension.onMessage.addListener(extensionListener);
 
   port.onDisconnect.addListener(function(disconnectedPort) {
@@ -40,5 +41,7 @@ chrome.extension.onConnect.addListener(function(port) {
 });
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-  chrome.tabs.executeScript(tabId, { file: 'content_script.js' });
+  chrome.tabs.sendMessage(tabId, {
+    type: 'getLocalStorage'
+  });
 });

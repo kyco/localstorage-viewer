@@ -21,24 +21,21 @@ const messageContainer = document.querySelector('#message');
 /**
  * This method updates the panel's UI.
  *
- * @method `updateMarkup`
- * @param {Object} storageItems
+ * @method `handleResponse`
+ * @param {Object} message
  */
-const updateMarkup = function(storageItems) {
+function handleResponse(message) {
+  if (!(message && message.data)) {
+    return false;
+  }
+
   let markup = '';
   let count = 0;
 
-  for (let key in storageItems) {
-    if (storageItems.hasOwnProperty(key)) {
-      let value = storageItems[key];
+  for (let key in message.data) {
+    if (message.data.hasOwnProperty(key)) {
+      let value = message.data[key];
       count++;
-
-      try {
-        item = JSON.parse(value);
-      } catch (err) {
-        console.warn(`Couldn't parse value for ${key}.`);
-        item = value;
-      }
 
       markup += `
         <div class="storage-item ${count % 2 === 0 ? 'even' : 'odd'}">
@@ -57,30 +54,19 @@ const updateMarkup = function(storageItems) {
     container.innerHTML = '';
     messageContainer.innerHTML = 'Local storage is empty.';
   }
-};
-
-/**
- * This method sends a message to background.js which then gets
- * passed on to the inspected page.
- *
- * @method `sendObjectToInspectedPage`
- * @param {Object} message
- */
-function sendObjectToInspectedPage(message) {
-  message.tabId = chrome.devtools.inspectedWindow.tabId;
-  chrome.extension.sendMessage(message);
 }
 
-refreshButton.addEventListener('click', () => {
-  sendObjectToInspectedPage({
-    action: 'script',
-    content: 'content_script.js'
+clearButton.addEventListener('click', () => {
+  chrome.extension.sendMessage({
+    tabId: chrome.devtools.inspectedWindow.tabId,
+    type: 'clearLocalStorage'
   });
 });
 
-clearButton.addEventListener('click', () => {
-  sendObjectToInspectedPage({
-    msg: 'clear'
+refreshButton.addEventListener('click', () => {
+  chrome.extension.sendMessage({
+    tabId: chrome.devtools.inspectedWindow.tabId,
+    type: 'getLocalStorage'
   });
 });
 
@@ -91,16 +77,16 @@ clearButton.addEventListener('click', () => {
  * @method `createChannel`
  */
 (function createChannel() {
-  // Create channel with background.js
   let port = chrome.extension.connect({ name: 'lsv' });
 
-  // Listen to messages from background.js
   port.onMessage.addListener((message) => {
-    updateMarkup(message.content);
+    handleResponse(message);
   });
 })();
 
-sendObjectToInspectedPage({
-  action: 'script',
-  content: 'content_script.js'
+chrome.extension.sendMessage({
+  tabId: chrome.devtools.inspectedWindow.tabId,
+  type: 'getLocalStorage'
+}, (response) => {
+  handleResponse(response);
 });

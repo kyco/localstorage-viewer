@@ -15,10 +15,12 @@
  */
 
 chrome.devtools.panels.create('Local Storage', null, 'panel.html', (panel) => {
-  panel.onShown.addListener(function(extensionPanel) {
-    extensionPanel.sendObjectToInspectedPage({
-      action: 'script',
-      content: 'content_script.js'
+  panel.onShown.addListener((extensionPanel) => {
+    chrome.extension.sendMessage({
+      tabId: chrome.devtools.inspectedWindow.tabId,
+      type: 'getLocalStorage'
+    }, (response) => {
+      extensionPanel.handleResponse(response);
     });
   });
 });

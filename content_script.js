@@ -12,32 +12,37 @@
  * - chrome.runtime.*
  */
 
-localStorageItems = localStorage.length;
+let localStorageItems = 0;
 
-chrome.extension.onMessage.addListener((message) => {
-  if (message.msg === 'clear') {
-    localStorage.clear();
+chrome.extension.onMessage.addListener((message, sender, callback) => {
+  switch (message.type) {
+    case 'getLocalStorage':
+      message.data = localStorage;
+      break;
+    case 'clearLocalStorage':
+      localStorage.clear();
+      message.data = localStorage;
+      break;
+    // no default
   }
+  callback(message);
 });
 
-chrome.extension.sendMessage({
-  type: 'init',
-  content: localStorage
-}, function(message) {});
-
-window.addEventListener('storage', function(storageEvent) {
+window.addEventListener('storage', (storageEvent) => {
   chrome.extension.sendMessage({
     type: 'update',
     content: localStorage
-  }, function(message) {});
+  });
 }, false);
 
-storageChangeInterval = setInterval(() => {
+let storageChangeInterval = setInterval(() => {
   if (localStorageItems !== localStorage.length) {
     localStorageItems = localStorage.length;
-    chrome.extension.sendMessage({
-      type: 'update',
-      content: localStorage
-    }, function(message) {});
+    if (localStorageItems) {
+      chrome.extension.sendMessage({
+        type: 'update',
+        data: localStorage
+      });
+    }
   }
 }, 500);

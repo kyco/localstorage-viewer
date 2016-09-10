@@ -9,12 +9,21 @@
       "background.js"
     ]
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content_script.js"
+      ]
+    }
+  ],
   "icons": {
     "128": "icon.png"
   },
   "permissions": [
     "tabs",
-    "http://*/*",
-    "https://*/*"
+    "<all_urls>"
   ]
 }
