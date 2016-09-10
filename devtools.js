@@ -18,7 +18,7 @@ chrome.devtools.panels.create('Local Storage', null, 'panel.html', (panel) => {
   panel.onShown.addListener((extensionPanel) => {
     chrome.extension.sendMessage({
       tabId: chrome.devtools.inspectedWindow.tabId,
-      type: 'getLocalStorage'
+      type: 'getLocalStorageSilent'
     }, (response) => {
       extensionPanel.handleResponse(response);
     });

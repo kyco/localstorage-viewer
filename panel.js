@@ -56,7 +56,7 @@ function handleResponse(message) {
     messageContainer.innerHTML = 'Local storage is empty.';
   }
 
-  if (!header.classList.contains('updated')) {
+  if (message.type !== 'getLocalStorageSilent' && !header.classList.contains('updated')) {
     header.classList.add('updated');
     setTimeout(() => {
       header.classList.remove('updated');
@@ -94,7 +94,7 @@ refreshButton.addEventListener('click', () => {
 
 chrome.extension.sendMessage({
   tabId: chrome.devtools.inspectedWindow.tabId,
-  type: 'getLocalStorage'
+  type: 'getLocalStorageSilent'
 }, (response) => {
   handleResponse(response);
 });

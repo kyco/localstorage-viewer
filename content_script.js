@@ -17,6 +17,7 @@ let localStorageItems = 0;
 chrome.extension.onMessage.addListener((message, sender, callback) => {
   switch (message.type) {
     case 'getLocalStorage':
+    case 'getLocalStorageSilent':
       message.data = localStorage;
       break;
     case 'clearLocalStorage':

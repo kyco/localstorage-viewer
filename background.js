@@ -37,7 +37,7 @@ chrome.extension.onConnect.addListener((port) => {
 
   chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     chrome.tabs.sendMessage(tabId, {
-      type: 'getLocalStorage'
+      type: 'getLocalStorageSilent'
     }, (response) => {
       port.postMessage(response);
     });
@@ -45,7 +45,7 @@ chrome.extension.onConnect.addListener((port) => {
 
   chrome.tabs.onActivated.addListener((activeInfo) => {
     chrome.tabs.sendMessage(activeInfo.tabId, {
-      type: 'getLocalStorage'
+      type: 'getLocalStorageSilent'
     }, (response) => {
       port.postMessage(response);
     });
