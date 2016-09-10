@@ -13,6 +13,7 @@
  * - chrome.runtime.*
  */
 
+const header = document.querySelector('header');
 const container = document.querySelector('#storage-items');
 const clearButton = document.querySelector('#clear-button');
 const refreshButton = document.querySelector('#refresh-button');
@@ -53,6 +54,13 @@ function handleResponse(message) {
   } else {
     container.innerHTML = '';
     messageContainer.innerHTML = 'Local storage is empty.';
+  }
+
+  if (!header.classList.contains('updated')) {
+    header.classList.add('updated');
+    setTimeout(() => {
+      header.classList.remove('updated');
+    }, 225);
   }
 }
 

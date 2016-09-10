@@ -18,6 +18,12 @@ header {
   background-color: #fff;
   padding: 3px;
   border-bottom: 1px solid #ddd;
+  box-shadow: 0 0 100px #fff inset;
+  transition: background .1s linear;
+}
+
+header.updated {
+  background-color: #e8f27d;
 }
 
 header .message {
