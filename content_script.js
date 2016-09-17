@@ -25,6 +25,10 @@ chrome.extension.onMessage.addListener((message, sender, callback) => {
       localStorage.clear();
       message.data = localStorage;
       break;
+    case 'clearLocalStorageItem':
+      localStorage.removeItem(message.itemKey);
+      message.data = localStorage;
+      break;
     // no default
   }
   callback(message);

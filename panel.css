@@ -31,7 +31,7 @@ header .message {
   color: #555;
 }
 
-header button {
+button {
   padding: 3px 6px;
   color: #555;
   background-color: #fff;
@@ -39,13 +39,27 @@ header button {
   border: 1px solid #ddd;
 }
 
-header button:hover {
+button:hover {
   color: #000;
   border-color: #bbb;
 }
 
 .storage-items {
   margin: 28px 0;
+}
+
+.storage-items.beautify .storage-item {
+  height: auto;
+}
+
+.storage-items.beautify .storage-item:hover {
+  background-color: inherit;
+}
+
+.storage-items.beautify .storage-item .value {
+  white-space: pre;
+  font-family: monospace;
+  line-height: 13px;
 }
 
 .storage-items em {
@@ -76,9 +90,21 @@ header button:hover {
 }
 
 .key {
+  padding-left: 0;
   width: 20%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .value {
   width: 80%;
+}
+
+.key button {
+  margin-right: 4px;
+  padding: 0 6px 3px;
+  height: 22px;
+  background-color: transparent;
+  border: 0;
+  border-right: 1px solid #eee;
 }
