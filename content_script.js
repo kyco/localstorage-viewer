@@ -13,6 +13,7 @@
  */
 
 let localStorageItems = 0;
+const intervalTimeout = 500;
 
 chrome.extension.onMessage.addListener((message, sender, callback) => {
   switch (message.type) {
@@ -46,4 +47,4 @@ let storageChangeInterval = setInterval(() => {
       });
     }
   }
-}, 500);
+}, intervalTimeout);

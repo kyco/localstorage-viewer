@@ -45,7 +45,7 @@ header button:hover {
 }
 
 .storage-items {
-  margin: 27px 0;
+  margin: 28px 0;
 }
 
 .storage-items em {
@@ -55,6 +55,9 @@ header button:hover {
 .storage-item {
   border-bottom: 1px solid #ddd;
   cursor: default;
+  overflow: hidden;
+  white-space: nowrap;
+  height: 22px;
 }
 
 .storage-item.even {
@@ -70,8 +73,6 @@ header button:hover {
   float: left;
   padding: 0 5px;
   line-height: 20px;
-  overflow: hidden;
-  white-space: nowrap;
 }
 
 .key {
