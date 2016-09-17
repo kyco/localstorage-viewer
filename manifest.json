@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Local Storage Viewer",
   "description": "View localstorage from devtools with a simple interface.",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "devtools_page": "devtools.html",
   "background": {
     "scripts": [
