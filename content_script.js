@@ -12,8 +12,36 @@
  * - chrome.runtime.*
  */
 
+let CACHED_STORAGE = [];
 let localStorageItems = 0;
 const intervalTimeout = 500;
+
+const setCachedStorage = function(storage) {
+  CACHED_STORAGE = [];
+  for (let i = 0, n = localStorage.length; i < n; i++) {
+    CACHED_STORAGE.push({
+      key: localStorage.key(i),
+      value: localStorage.getItem(localStorage.key(i))
+    });
+  }
+};
+
+const runDiffOnStorage = function(storage) {
+  let diff = 0;
+  for (let i = 0, n = localStorage.length; i < n; i++) {
+    if (localStorage.getItem(localStorage.key(i)).length !== CACHED_STORAGE[i].value.length) {
+      diff++;
+    }
+  }
+
+  if (diff) {
+    chrome.extension.sendMessage({
+      type: 'update',
+      data: localStorage
+    });
+    setCachedStorage(localStorage);
+  }
+};
 
 chrome.extension.onMessage.addListener((message, sender, callback) => {
   switch (message.type) {
@@ -32,6 +60,7 @@ chrome.extension.onMessage.addListener((message, sender, callback) => {
     // no default
   }
   callback(message);
+  setCachedStorage(localStorage);
 });
 
 window.addEventListener('storage', (storageEvent) => {
@@ -39,6 +68,7 @@ window.addEventListener('storage', (storageEvent) => {
     type: 'update',
     data: localStorage
   });
+  setCachedStorage(localStorage);
 }, false);
 
 let storageChangeInterval = setInterval(() => {
@@ -49,6 +79,9 @@ let storageChangeInterval = setInterval(() => {
         type: 'update',
         data: localStorage
       });
+      setCachedStorage(localStorage);
     }
+  } else {
+    runDiffOnStorage(localStorage);
   }
 }, intervalTimeout);
