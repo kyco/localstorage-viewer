@@ -37,7 +37,7 @@ chrome.extension.onMessage.addListener((message, sender, callback) => {
 window.addEventListener('storage', (storageEvent) => {
   chrome.extension.sendMessage({
     type: 'update',
-    content: localStorage
+    data: localStorage
   });
 }, false);
 
