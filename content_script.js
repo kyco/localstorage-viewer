@@ -29,8 +29,10 @@ const setCachedStorage = function(storage) {
 const runDiffOnStorage = function(storage) {
   let diff = 0;
   for (let i = 0, n = localStorage.length; i < n; i++) {
-    if (localStorage.getItem(localStorage.key(i)).length !== CACHED_STORAGE[i].value.length) {
-      diff++;
+    if (CACHED_STORAGE[i] && CACHED_STORAGE[i].value) {
+      if (localStorage.getItem(localStorage.key(i)).length !== CACHED_STORAGE[i].value.length) {
+        diff++;
+      }
     }
   }
 
